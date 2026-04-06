@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Acesso</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
+        .container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
+        h2 { text-align: center; color: #333; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; border: none; color: white; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .msg { color: red; font-size: 0.8rem; text-align: center; margin-top: 10px; display: none; }
+        .toggle-link { text-align: center; margin-top: 15px; font-size: 0.9rem; }
+        .toggle-link span { color: #007bff; cursor: pointer; text-decoration: underline; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
 
+    <div class="container">
+        <div id="loginSection">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="E-mail">
+            <input type="password" id="loginPass" placeholder="Senha">
+            <button onclick="fazerLogin()">Entrar</button>
+            <p id="errorMsg" class="msg">Usuário ou senha incorretos. Tente de novo.</p>
+            <div class="toggle-link">Não tem conta? <span onclick="toggleForm()">Cadastre-se</span></div>
+        </div>
+
+        <div id="registerSection" class="hidden">
+            <h2>Cadastro</h2>
+            <input type="email" id="regEmail" placeholder="E-mail">
+            <input type="password" id="regPass" placeholder="Senha">
+            <button onclick="fazerCadastro()">Cadastrar</button>
+            <div class="toggle-link">Já tem conta? <span onclick="toggleForm()">Voltar ao Login</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Função para alternar entre as telas
+        function toggleForm() {
+            document.getElementById('loginSection').classList.toggle('hidden');
+            document.getElementById('registerSection').classList.toggle('hidden');
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        // Lógica de Cadastro
+        function fazerCadastro() {
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+
+            if (email && pass) {
+                // Salva no LocalStorage (Simulando banco de dados)
+                localStorage.setItem(email, pass);
+                alert("Cadastro realizado com sucesso!");
+                
+                // Redireciona após cadastro conforme solicitado
+                window.location.href = "livros2.html";
+            } else {
+                alert("Preencha todos os campos!");
+            }
+        }
+
+        // Lógica de Login
+        function fazerLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPass').value;
+            const savedPass = localStorage.getItem(email);
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (savedPass && savedPass === pass) {
+                // Se acertar, redireciona
+                window.location.href = "livros2.html";
+            } else {
+                // Se errar, mostra a mensagem de erro
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
