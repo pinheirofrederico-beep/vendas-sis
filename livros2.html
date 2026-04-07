@@ -1,1 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosméticos Pro - Catálogo Completo</title>
+    <style>
+        :root { --primary: #d81b60; --secondary: #8a05be; --bg: #fdf2f7; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--bg); color: #333; }
+        
+        header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 40px 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
+        
+        /* Grid de Categorias */
+        .secao-titulo { border-left: 5px solid var(--primary); padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; }
+        
+        .vitrine { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        
+        .produto { background: white; padding: 20px; border-radius: 12px; text-align: center; transition: transform 0.3s; border: 1px solid #eee; position: relative; }
+        .produto:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .produto .preco { font-weight: bold; color: var(--primary); font-size: 1.2rem; display: block; margin: 10px 0; }
+        
+        button.buy-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; }
+        button.buy-btn:hover { background: #ad144b; }
 
+        /* Rodapé de Pagamento */
+        .area-pix { background: white; padding: 30px; border-radius: 15px; margin-top: 50px; text-align: center; border: 2px solid var(--secondary); }
+        .chave-pix { font-size: 1.8rem; letter-spacing: 1px; color: var(--secondary); font-weight: bold; margin: 15px 0; padding: 10px; background: #f3e5f5; border-radius: 8px; display: inline-block; }
+        
+        .info-banco { color: #666; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Portal da Beleza</h1>
+    <p>Sua vitrine exclusiva de cosméticos e cuidados pessoais</p>
+</header>
+
+<div class="container">
+    
+    <h2 class="secao-titulo">Maquiagem e Unhas</h2>
+    <div class="vitrine">
+        <div class="produto">
+            <h3>Kit Esmaltes Verão</h3>
+            <p>Conjunto com 5 cores pastéis</p>
+            <span class="preco">R$ 45,90</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+        <div class="produto">
+            <h3>Base Matte HD</h3>
+            <p>Alta cobertura e longa duração</p>
+            <span class="preco">R$ 62,00</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+        <div class="produto">
+            <h3>Batom Hidratante</h3>
+            <p>Com Ácido Hialurônico</p>
+            <span class="preco">R$ 29,90</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+    </div>
+
+    <h2 class="secao-titulo">Cuidados Capilares</h2>
+    <div class="vitrine">
+        <div class="produto">
+            <h3>Shampoo Antirresíduos</h3>
+            <p>Limpeza profunda 500ml</p>
+            <span class="preco">R$ 38,00</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+        <div class="produto">
+            <h3>Condicionador Selante</h3>
+            <p>Brilho espelhado e maciez</p>
+            <span class="preco">R$ 42,50</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+        <div class="produto">
+            <h3>Máscara de Nutrição</h3>
+            <p>Óleo de Argan e Coco</p>
+            <span class="preco">R$ 55,00</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+    </div>
+
+    <h2 class="secao-titulo">Corpo e Banho</h2>
+    <div class="vitrine">
+        <div class="produto">
+            <h3>Creme Hidratante</h3>
+            <p>Fragrância de Lavanda 400ml</p>
+            <span class="preco">R$ 34,90</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+        <div class="produto">
+            <h3>Óleo Corporal</h3>
+            <p>Toque seco e iluminação</p>
+            <span class="preco">R$ 49,90</span>
+            <button class="buy-btn">Adicionar</button>
+        </div>
+    </div>
+
+    <section class="area-pix">
+        <h2>Finalize seu Pedido via PIX</h2>
+        <p>Copie a chave abaixo para realizar o pagamento no seu banco:</p>
+        <div class="chave-pix">43988271586</div>
+        <p class="info-banco">Instituição: <strong>Nubank</strong></p>
+        <p><small>Após pagar, guarde seu comprovante.</small></p>
+    </section>
+</div>
+
+<script>
+    // SISTEMA DE BANCO DE DADOS (IndexedDB)
+    // Este código cria um banco de dados no navegador para registrar as visitas ou pedidos
+    let db;
+    const request = indexedDB.open("SistemaCosmeticos", 1);
+
+    request.onupgradeneeded = function(event) {
+        db = event.target.result;
+        // Cria uma "tabela" chamada 'pedidos'
+        if (!db.objectStoreNames.contains('pedidos')) {
+            db.createObjectStore('pedidos', { keyPath: 'id', autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = function(event) {
+        db = event.target.result;
+        console.log("Banco de dados pronto para uso.");
+    };
+
+    // Função para simular salvar um pedido no banco de dados
+    document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const produtoNome = btn.parentElement.querySelector('h3').innerText;
+            const transaction = db.transaction(['pedidos'], 'readwrite');
+            const store = transaction.objectStore('pedidos');
+            
+            const pedido = {
+                item: produtoNome,
+                data: new Date().toLocaleString(),
+                status: 'Aguardando PIX'
+            };
+
+            store.add(pedido);
+            alert(produtoNome + " foi adicionado! Realize o PIX para confirmar.");
+        });
+    });
+</script>
+
+</body>
+</html>
